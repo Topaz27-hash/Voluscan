@@ -1,0 +1,4 @@
+Add this key to ios/Runner/Info.plist after running `flutter create .`:
+
+<key>NSCameraUsageDescription</key>
+<string>VoluScan uses the camera to capture and measure parcels.</string>
