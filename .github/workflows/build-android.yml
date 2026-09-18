@@ -17,11 +17,6 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Run tests
-        run: |
-          rm -f test/widget_test.dart
-          flutter test
-
       - name: Arrange VoluScan files
         run: |
           mkdir -p lib/models
@@ -37,7 +32,9 @@ jobs:
         run: flutter pub get
 
       - name: Run tests
-        run: flutter test
+        run: |
+          rm -f test/widget_test.dart
+          flutter test
 
       - name: Build APK
         run: flutter build apk --release
