@@ -16,6 +16,9 @@ jobs:
         with:
           channel: stable
           cache: true
+          
+      - name: Generate Android project
+        run: flutter create --platforms=android .
 
       - name: Arrange VoluScan files
         run: |
