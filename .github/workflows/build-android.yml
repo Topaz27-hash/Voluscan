@@ -1,0 +1,47 @@
+name: Build VoluScan Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate Android project
+        run: flutter create --platforms=android .
+
+      - name: Arrange VoluScan files
+        run: |
+          mkdir -p lib/models
+          mkdir -p lib/services
+          mkdir -p test
+          cp main.dart lib/main.dart
+          cp parcel_measurement.dart lib/models/parcel_measurement.dart
+          cp receipt_service.dart lib/services/receipt_service.dart
+          cp parcel_measurement_test.dart test/parcel_measurement_test.dart
+          cp AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: VoluScan-Android-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
